@@ -1,39 +1,92 @@
-/* Base */
-* {
+/* ─── Base & Reset ─────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* ─── Keyframe Animations ───────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.45); }
+  50%       { box-shadow: 0 0 0 10px rgba(29, 185, 84, 0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ─── Global ────────────────────────────────────────────────────── */
 body {
-  font-family: "Google Sans", "Google Sans Flex", system-ui, -apple-system, Segoe UI,
-    Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Google Sans", "Google Sans Flex", system-ui, -apple-system,
+    Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 24px;
-  background: #0b0b0d;
+  padding: clamp(12px, 4vw, 32px);
+
+  /* animated gradient background */
+  background: linear-gradient(135deg, #07070c, #0e0e17, #0b1420, #06090d);
+  background-size: 300% 300%;
+  animation: gradientShift 12s ease infinite;
+
   color: #f2f2f2;
 }
 
-/* Container */
+/* ─── Container ─────────────────────────────────────────────────── */
 .container {
-  width: min(420px, 92vw);
-  background: #131318;
-  border-radius: 18px;
-  padding: 16px;
+  width: min(440px, 96vw);
+  background: rgba(19, 19, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 22px;
+  padding: clamp(12px, 4vw, 20px);
   display: grid;
-  gap: 14px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  gap: 16px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+
+  animation: fadeInScale 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Main photo */
+/* ─── Main Photo ─────────────────────────────────────────────────── */
 .main_photo_container {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   background: #0f0f14;
+  position: relative;
+
+  /* subtle glow on the card image */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
 }
 
 .main_photo_container img {
@@ -41,75 +94,167 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.55s ease;
 }
 
-/* Info */
+.main_photo_container:hover img {
+  transform: scale(1.045);
+  filter: brightness(1.08) saturate(1.1);
+}
+
+/* gradient overlay at the bottom of the main photo */
+.main_photo_container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(13, 13, 20, 0.55) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ─── Info ───────────────────────────────────────────────────────── */
 .info_container {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 4px 2px;
+  gap: 5px;
+  padding: 2px 4px;
+  animation: fadeInUp 0.5s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .info_container span:first-child {
-  font-size: 14px;
-  opacity: 0.75;
-  letter-spacing: 0.2px;
+  font-size: clamp(12px, 3vw, 14px);
+  opacity: 0.65;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .info_container span:last-child {
-  font-size: 20px;
-  font-weight: 650;
+  font-size: clamp(18px, 5vw, 22px);
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff 60%, rgba(255,255,255,0.55));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Playlist */
+/* ─── Playlist ───────────────────────────────────────────────────── */
 .playlist_container {
   display: grid;
-  gap: 10px;
-  padding-top: 6px;
+  gap: 8px;
+  padding-top: 4px;
 }
+
+/* Staggered entrance for each song row */
+.playlist_song:nth-child(1) { animation: slideInLeft 0.45s 0.15s ease both; }
+.playlist_song:nth-child(2) { animation: slideInLeft 0.45s 0.25s ease both; }
+.playlist_song:nth-child(3) { animation: slideInLeft 0.45s 0.35s ease both; }
+.playlist_song:nth-child(4) { animation: slideInLeft 0.45s 0.45s ease both; }
+.playlist_song:nth-child(5) { animation: slideInLeft 0.45s 0.55s ease both; }
 
 .playlist_song {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px;
+  padding: 10px 12px;
   border-radius: 14px;
-  background: rgb(39, 35, 35);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    background  0.28s ease,
+    border-color 0.28s ease,
+    transform   0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow  0.28s ease;
 }
 
+/* shimmer sweep on hover */
+.playlist_song::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; bottom: 0;
+  width: 60%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 100%
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.playlist_song:hover::before {
+  left: 160%;
+}
+
+.playlist_song:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.14);
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.playlist_song:active {
+  transform: translateX(4px) scale(0.98);
+}
+
+/* ─── Song thumbnail ─────────────────────────────────────────────── */
 .playlist_song img {
-  width: 52px;
-  height: 52px;
+  width: clamp(44px, 12vw, 54px);
+  height: clamp(44px, 12vw, 54px);
   border-radius: 12px;
   object-fit: cover;
   flex: 0 0 auto;
   display: block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  transition: border-radius 0.28s ease, transform 0.28s ease;
 }
 
+.playlist_song:hover img {
+  border-radius: 8px;
+  transform: scale(1.05);
+}
+
+/* ─── Song details text ──────────────────────────────────────────── */
 .playlist_song .details {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
+  flex: 1;
 }
 
 .playlist_song .details span:first-child {
-  font-size: 14px;
+  font-size: clamp(13px, 3.5vw, 14px);
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+
+.playlist_song:hover .details span:first-child {
+  color: #1db954;
 }
 
 .playlist_song .details span:last-child {
-  font-size: 12px;
-  opacity: 0.75;
+  font-size: clamp(11px, 3vw, 12px);
+  opacity: 0.65;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: opacity 0.2s;
 }
 
+.playlist_song:hover .details span:last-child {
+  opacity: 0.85;
+}
+
+/* ─── Artist info ────────────────────────────────────────────────── */
 .artist_info {
   display: flex;
   align-items: center;
@@ -117,41 +262,103 @@ body {
   gap: 4px;
 }
 
-/* Hover */
-.playlist_song:hover {
-  background: rgba(255, 255, 255, 0.07);
-}
-.icons{
+/* ─── Icon bar ───────────────────────────────────────────────────── */
+.icons {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+  animation: fadeInUp 0.5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.box{
-  width: 30%;
+
+/* ─── Green pill button ──────────────────────────────────────────── */
+.box {
+  width: auto;
+  min-width: 88px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 16px;
+  gap: 6px;
+  padding: 8px 20px;
   background: #1db954;
   border-radius: 9999px;
   color: #fff;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: clamp(13px, 3.5vw, 14px);
+  font-weight: 700;
   cursor: pointer;
+  letter-spacing: 0.2px;
+
+  box-shadow: 0 4px 18px rgba(29, 185, 84, 0.38);
+  transition:
+    background  0.22s ease,
+    transform   0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow  0.22s ease;
+  animation: pulse 2.4s 1.2s ease-in-out infinite;
 }
 
-.icons_plusMinus{
-  color: rgb(39, 35, 35);
+.box:hover {
+  background: #17a349;
+  transform: scale(1.07);
+  box-shadow: 0 6px 24px rgba(29, 185, 84, 0.55);
+  animation: none;        /* stop pulse while hovering */
+}
+
+.box:active {
+  transform: scale(0.96);
+}
+
+/* ─── Plus / Minus icons ─────────────────────────────────────────── */
+.icons_plusMinus {
+  color: rgba(255, 255, 255, 0.18);
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: right;
+  justify-content: flex-end;
   margin-left: auto;
-  padding: 0 12px;
+  padding: 0 10px;
+  gap: 6px;
+  transition: color 0.25s ease, transform 0.25s ease;
 }
 
+.icons_plusMinus i,
+.icons_plusMinus svg {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-.playlist_song:hover .icons_plusMinus{
+.playlist_song:hover .icons_plusMinus {
   color: #fdfdfd;
+}
+
+.playlist_song:hover .icons_plusMinus i:hover,
+.playlist_song:hover .icons_plusMinus svg:hover {
+  transform: scale(1.25) rotate(8deg);
+  color: #1db954;
+}
+
+/* ─── Responsive tweaks ──────────────────────────────────────────── */
+@media (max-width: 400px) {
+  .container {
+    border-radius: 16px;
+    padding: 12px;
+  }
+
+  .main_photo_container {
+    border-radius: 12px;
+  }
+
+  .playlist_song {
+    border-radius: 10px;
+    gap: 10px;
+    padding: 8px 10px;
+  }
+
+  .playlist_song img {
+    border-radius: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
