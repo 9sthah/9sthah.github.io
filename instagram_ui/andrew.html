@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat — Andrew Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/71506c716d.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrap" id="wrap">
+
+  <!-- ── Header ─────────────────────────────── -->
+  <header class="message_header" id="msgHeader">
+    <button class="back_btn" aria-label="Go back" onclick="history.back()">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div class="user_header" id="userHeader">
+      <div class="avatar_ring">
+        <div class="avatar_placeholder">A</div>
+        <span class="online_dot" aria-hidden="true"></span>
+      </div>
+      <div class="user_header_info">
+        <span class="user_display_name">Andrew Kim</span>
+        <span class="user_status">Active now</span>
+      </div>
+    </div>
+
+    <div class="header_actions">
+      <button class="icon_btn" aria-label="Voice call">
+        <i class="fa-regular fa-phone"></i>
+      </button>
+      <button class="icon_btn" aria-label="Video call">
+        <i class="fa-regular fa-video"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Message Thread ─────────────────────── -->
+  <main class="message_main" id="messageMain">
+
+    <!-- Date separator -->
+    <div class="date_separator">
+      <span>Today</span>
+    </div>
+
+    <!-- Received message -->
+    <div class="msg_row msg_row_received">
+      <div class="msg_avatar_small">
+        <div class="avatar_placeholder_sm">A</div>
+      </div>
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_received">Hey, how are you?</div>
+        <div class="msg_time">2:30 PM</div>
+      </div>
+    </div>
+
+    <!-- Sent message -->
+    <div class="msg_row msg_row_sent">
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_sent">I'm good, thanks! How about you? 😊</div>
+        <div class="msg_time msg_time_sent">2:32 PM</div>
+      </div>
+    </div>
+
+    <!-- Received message -->
+    <div class="msg_row msg_row_received">
+      <div class="msg_avatar_small">
+        <div class="avatar_placeholder_sm">A</div>
+      </div>
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_received">Doing well! Just wanted to check in.</div>
+        <div class="msg_time">2:35 PM</div>
+      </div>
+    </div>
+
+    <!-- Sent message -->
+    <div class="msg_row msg_row_sent">
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_sent">That's really nice of you 🙏</div>
+        <div class="msg_time msg_time_sent">2:36 PM</div>
+      </div>
+    </div>
+
+    <!-- Received message — multi-line -->
+    <div class="msg_row msg_row_received">
+      <div class="msg_avatar_small">
+        <div class="avatar_placeholder_sm">A</div>
+      </div>
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_received">Sure! Let's catch up soon. Maybe grab coffee this weekend?</div>
+        <div class="msg_time">2:38 PM</div>
+      </div>
+    </div>
+
+    <!-- Sent -->
+    <div class="msg_row msg_row_sent">
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_sent">Sounds great! Saturday works for me ☕</div>
+        <div class="msg_time msg_time_sent">2:39 PM · Seen</div>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="msg_row msg_row_received" id="typingRow">
+      <div class="msg_avatar_small">
+        <div class="avatar_placeholder_sm">A</div>
+      </div>
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_received typing_bubble">
+          <span class="typing_dot"></span>
+          <span class="typing_dot"></span>
+          <span class="typing_dot"></span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Input Bar ───────────────────────────── -->
+  <footer class="input_bar" id="inputBar">
+    <button class="icon_btn icon_btn_sm" aria-label="More options">
+      <i class="fa-regular fa-circle-plus"></i>
+    </button>
+
+    <div class="input_wrap">
+      <input
+        class="msg_input"
+        type="text"
+        placeholder="Message…"
+        aria-label="Type a message"
+        id="msgInput"
+        autocomplete="off"
+      />
+      <button class="emoji_btn" aria-label="Emoji">
+        <i class="fa-regular fa-face-smile"></i>
+      </button>
+    </div>
+
+    <button class="send_btn" aria-label="Send" id="sendBtn">
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  const main     = document.getElementById('messageMain');
+  const input    = document.getElementById('msgInput');
+  const sendBtn  = document.getElementById('sendBtn');
+  const header   = document.getElementById('msgHeader');
+  const wrap     = document.getElementById('wrap');
+  const typing   = document.getElementById('typingRow');
+
+  /* ── Auto-scroll to bottom ─────────────────── */
+  function scrollToBottom(smooth) {
+    main.scrollTo({ top: main.scrollHeight, behavior: smooth ? 'smooth' : 'instant' });
+  }
+  scrollToBottom(false);
+
+  /* ── Header shadow on scroll ───────────────── */
+  main.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', main.scrollTop > 4);
+  }, { passive: true });
+
+  /* ── Send a message ────────────────────────── */
+  function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Hide typing indicator
+    typing.style.display = 'none';
+
+    // Create new sent bubble
+    const row = document.createElement('div');
+    row.className = 'msg_row msg_row_sent msg_row_new';
+    row.innerHTML = `
+      <div class="msg_bubble_wrap">
+        <div class="msg_bubble msg_bubble_sent">${escapeHtml(text)}</div>
+        <div class="msg_time msg_time_sent">${getTime()}</div>
+      </div>`;
+    main.insertBefore(row, typing);
+
+    input.value = '';
+    toggleSendBtn();
+    scrollToBottom(true);
+
+    // Simulate a reply after a short delay
+    setTimeout(() => {
+      typing.style.display = '';
+      scrollToBottom(true);
+    }, 800);
+
+    setTimeout(() => {
+      typing.style.display = 'none';
+      const reply = document.createElement('div');
+      reply.className = 'msg_row msg_row_received msg_row_new';
+      reply.innerHTML = `
+        <div class="msg_avatar_small"><div class="avatar_placeholder_sm">A</div></div>
+        <div class="msg_bubble_wrap">
+          <div class="msg_bubble msg_bubble_received">👋 Got it!</div>
+          <div class="msg_time">${getTime()}</div>
+        </div>`;
+      main.insertBefore(reply, typing);
+      scrollToBottom(true);
+    }, 2400);
+  }
+
+  /* ── Toggle send / heart icon ──────────────── */
+  function toggleSendBtn() {
+    const hasText = input.value.trim().length > 0;
+    sendBtn.innerHTML = hasText
+      ? '<i class="fa-solid fa-paper-plane"></i>'
+      : '<i class="fa-regular fa-heart"></i>';
+    sendBtn.classList.toggle('send_btn_active', hasText);
+  }
+
+  input.addEventListener('input', toggleSendBtn);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }});
+  sendBtn.addEventListener('click', sendMessage);
+  toggleSendBtn();
+
+  /* ── Helpers ───────────────────────────────── */
+  function getTime() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+})();
+</script>
+</body>
+</html>

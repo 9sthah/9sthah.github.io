@@ -1216,3 +1216,1473 @@ html {
 .story_nav_btn:hover {
   color: rgba(255,255,255,.5);
 }
+
+/* ============================================================
+   Instagram DM — style.css
+   Modern, responsive, animated UI
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Birthstone&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+
+/* ── 1. Design Tokens ─────────────────────────────────────── */
+
+:root {
+  /* Brand gradient */
+  --ig-gradient:     linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  --ig-gradient-alt: linear-gradient(245deg, #833ab4 0%, #fd1d1d 28%, #fcb045 100%);
+
+  /* Palette */
+  --black:          #000000;
+  --white:          #ffffff;
+  --gray-50:        #f9f9f9;
+  --gray-100:       #fafafa;
+  --gray-200:       #efefef;
+  --gray-300:       #dbdbdb;
+  --gray-400:       #c7c7c7;
+  --gray-500:       #8e8e8e;
+  --gray-700:       #555555;
+  --text-primary:   #1a1a1a;
+  --text-secondary: #737373;
+  --text-muted:     #a8a8a8;
+
+  /* Accent */
+  --blue:           #0095f6;
+  --blue-dark:      #0077cc;
+  --heart-red:      #ed4956;
+  --green-online:   #22c55e;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  12px;
+  --space-lg:  16px;
+  --space-xl:  20px;
+  --space-2xl: 28px;
+
+  /* Radii */
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-soft:   0 2px 20px rgba(0, 0, 0, 0.07);
+  --shadow-card:   0 4px 32px rgba(0, 0, 0, 0.10);
+  --shadow-header: 0 2px 16px rgba(0, 0, 0, 0.08);
+
+  /* Motion */
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:    cubic-bezier(0.4, 0, 0.2, 1);
+  --transition:     0.22s var(--ease-smooth);
+  --transition-fast: 0.14s var(--ease-smooth);
+}
+
+
+/* ── 2. Reset & Base ──────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin:     0;
+  padding:    0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background:  var(--gray-100);
+  color:       var(--text-primary);
+  -webkit-font-smoothing:  antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height:  100vh;
+  display:     flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Hide scrollbars globally */
+::-webkit-scrollbar { width: 0; height: 0; }
+* { scrollbar-width: none; }
+
+
+/* ── 3. App Shell ─────────────────────────────────────────── */
+
+.wrap {
+  width:      100%;
+  max-width:  480px;
+  min-height: 100vh;
+  background: var(--white);
+  display:    flex;
+  flex-direction: column;
+  position:   relative;
+  box-shadow: var(--shadow-card);
+  overflow-y: auto;
+
+  /* Page-load entrance */
+  animation: appIn 0.45s var(--ease-smooth) both;
+}
+
+@keyframes appIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+
+/* ── 4. Header ────────────────────────────────────────────── */
+
+.dm_header {
+  display:         flex;
+  flex-direction:  column;
+  padding:         18px var(--space-lg) 0;
+  position:        sticky;
+  top:             0;
+  background:      rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index:         100;
+  border-bottom:   1px solid var(--gray-200);
+  transition:      box-shadow var(--transition);
+
+  /* Slide-down entrance */
+  animation: headerIn 0.4s var(--ease-smooth) both;
+}
+
+@keyframes headerIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+/* Shadow appears on scroll (toggled via JS) */
+.dm_header.scrolled {
+  box-shadow: var(--shadow-header);
+}
+
+/* ── Header top row */
+.dm_header_top {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  margin-bottom:   14px;
+}
+
+.dm_username {
+  font-size:      22px;
+  font-weight:    700;
+  letter-spacing: -0.3px;
+  line-height:    1;
+}
+
+/* ── Header icon group */
+.dm_header_icons {
+  display:     flex;
+  align-items: center;
+  gap:         2px;
+}
+
+.icon_btn {
+  background:    none;
+  border:        none;
+  cursor:        pointer;
+  width:         40px;
+  height:        40px;
+  border-radius: 50%;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  color:         var(--text-primary);
+  font-size:     20px;
+  transition:    background var(--transition), transform var(--transition);
+}
+
+.icon_btn:hover {
+  background: var(--gray-200);
+  transform:  scale(1.08);
+}
+
+.icon_btn:active {
+  transform: scale(0.90);
+}
+
+
+/* ── 5. Search Bar ────────────────────────────────────────── */
+
+.search_wrap {
+  position:      relative;
+  margin-bottom: 14px;
+}
+
+.search_icon {
+  position:       absolute;
+  left:           14px;
+  top:            50%;
+  transform:      translateY(-50%);
+  color:          var(--text-secondary);
+  font-size:      14px;
+  pointer-events: none;
+  transition:     color var(--transition);
+}
+
+.search_bar {
+  width:         100%;
+  height:        38px;
+  background:    var(--gray-200);
+  border-radius: var(--radius-pill);
+  border:        none;
+  outline:       none;
+  padding:       0 var(--space-lg) 0 40px;
+  font-size:     14px;
+  font-family:   'DM Sans', sans-serif;
+  color:         var(--text-primary);
+  transition:    background var(--transition), box-shadow var(--transition);
+}
+
+.search_bar::placeholder {
+  color: var(--text-secondary);
+}
+
+.search_bar:focus {
+  background:  var(--gray-100);
+  box-shadow:  0 0 0 2px var(--gray-300);
+}
+
+.search_bar:focus + .search_icon,
+.search_wrap:focus-within .search_icon {
+  color: var(--text-primary);
+}
+
+
+/* ── 6. Section Labels ────────────────────────────────────── */
+
+.section_label {
+  font-size:      12px;
+  font-weight:    600;
+  color:          var(--text-secondary);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding:        14px var(--space-lg) 6px;
+}
+
+
+/* ── 7. Message Requests Banner ───────────────────────────── */
+
+.requests_banner {
+  margin:        10px var(--space-md) 4px;
+  border-radius: var(--radius-md);
+  background:    var(--gray-100);
+  border:        1px solid var(--gray-300);
+  padding:       14px var(--space-lg);
+  display:       flex;
+  align-items:   center;
+  gap:           14px;
+  cursor:        pointer;
+  transition:    background    var(--transition),
+                 transform     var(--transition),
+                 box-shadow    var(--transition);
+
+  /* Staggered entrance */
+  animation: bannerIn 0.4s var(--ease-smooth) 0.3s both;
+}
+
+@keyframes bannerIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+.requests_banner:hover {
+  background:  var(--gray-200);
+  box-shadow:  var(--shadow-soft);
+  transform:   translateY(-1px);
+}
+
+.requests_banner:active {
+  transform: scale(0.99);
+}
+
+/* ── Stacked avatar pile */
+.requests_icon_stack {
+  position:    relative;
+  width:       52px;
+  height:      44px;
+  flex-shrink: 0;
+}
+
+.req_avatar {
+  position:      absolute;
+  width:         34px;
+  height:        34px;
+  border-radius: 50%;
+  object-fit:    cover;
+  border:        2.5px solid var(--white);
+}
+
+.req_avatar:nth-child(1) { top: 0;   left: 0;  z-index: 3; }
+.req_avatar:nth-child(2) { top: 5px; left: 10px; z-index: 2; }
+.req_avatar:nth-child(3) { top: 10px; left: 20px; z-index: 1; opacity: 0.65; }
+
+.requests_text {
+  flex: 1;
+}
+
+.requests_title {
+  font-size:     14.5px;
+  font-weight:   600;
+  margin-bottom: 2px;
+}
+
+.requests_sub {
+  font-size: 12.5px;
+  color:     var(--text-secondary);
+}
+
+.requests_chevron {
+  color:     var(--text-secondary);
+  font-size: 13px;
+  transition: transform var(--transition);
+}
+
+.requests_banner:hover .requests_chevron {
+  transform: translateX(2px);
+}
+
+
+/* ── 8. DM List ───────────────────────────────────────────── */
+
+.dm_list {
+  flex:           1;
+  padding-bottom: 80px; /* clearance for fixed nav */
+}
+
+
+/* ── 9. Individual DM Row ─────────────────────────────────── */
+
+.dm_item {
+  display:       flex;
+  align-items:   center;
+  gap:           var(--space-md);
+  padding:       10px var(--space-lg);
+  border-radius: var(--radius-md);
+  margin:        1px var(--space-sm);
+  cursor:        pointer;
+  position:      relative;
+  transition:    background var(--transition), transform var(--transition);
+
+  /* Staggered slide-in from left */
+  animation: dmIn 0.4s var(--ease-smooth) both;
+}
+
+.dm_item:nth-child(1) { animation-delay: 0.05s; }
+.dm_item:nth-child(2) { animation-delay: 0.10s; }
+.dm_item:nth-child(3) { animation-delay: 0.15s; }
+.dm_item:nth-child(4) { animation-delay: 0.20s; }
+.dm_item:nth-child(5) { animation-delay: 0.25s; }
+
+@keyframes dmIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+.dm_item:hover {
+  background: var(--gray-100);
+}
+
+.dm_item:active {
+  background: var(--gray-200);
+  transform:  scale(0.985);
+}
+
+/* Subtle separator line between rows */
+.dm_item + .dm_item::before {
+  content:    '';
+  position:   absolute;
+  top:        0;
+  left:       84px;  /* align with text, not avatar */
+  right:      var(--space-lg);
+  height:     1px;
+  background: var(--gray-200);
+  opacity:    0.6;
+}
+
+
+/* ── 10. Avatar ───────────────────────────────────────────── */
+
+.dm_avatar_wrap {
+  position:    relative;
+  flex-shrink: 0;
+}
+
+.dm_avatar {
+  width:         56px;
+  height:        56px;
+  border-radius: 50%;
+  object-fit:    cover;
+  transition:    transform var(--transition);
+}
+
+.dm_item:hover .dm_avatar {
+  transform: scale(1.04);
+}
+
+/* Online presence indicator */
+.online_dot {
+  position:      absolute;
+  bottom:        2px;
+  right:         2px;
+  width:         14px;
+  height:        14px;
+  background:    var(--green-online);
+  border-radius: 50%;
+  border:        2.5px solid var(--white);
+
+  /* Pulsing glow ring */
+  animation: onlinePulse 2.5s ease infinite;
+}
+
+@keyframes onlinePulse {
+  0%,  100% { box-shadow: 0 0 0 0   rgba(34, 197, 94, 0.45); }
+  50%        { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);    }
+}
+
+
+/* ── 11. DM Info (name + preview) ─────────────────────────── */
+
+.dm_info {
+  flex:      1;
+  min-width: 0; /* allow text truncation in flex child */
+}
+
+.dm_name {
+  font-size:      15px;
+  font-weight:    600;
+  white-space:    nowrap;
+  overflow:       hidden;
+  text-overflow:  ellipsis;
+  margin-bottom:  3px;
+  letter-spacing: -0.1px;
+}
+
+.dm_preview {
+  font-size:     13.5px;
+  color:         var(--text-secondary);
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+}
+
+/* Unread message: bold + dark */
+.dm_preview.unread {
+  color:       var(--text-primary);
+  font-weight: 600;
+}
+
+
+/* ── 12. DM Meta (timestamp + badge) ─────────────────────── */
+
+.dm_meta {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     flex-end;
+  gap:             6px;
+  flex-shrink:     0;
+}
+
+.dm_time {
+  font-size:   11.5px;
+  color:       var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Unread count badge */
+.unread_badge {
+  width:           20px;
+  height:          20px;
+  background:      var(--blue);
+  color:           var(--white);
+  border-radius:   50%;
+  font-size:       11px;
+  font-weight:     700;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+
+  /* Spring pop-in */
+  animation: badgePop 0.35s var(--ease-spring) both;
+}
+
+@keyframes badgePop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+
+/* ── 13. Bottom Navigation ────────────────────────────────── */
+
+.nav_bar {
+  height:          56px;
+  position:        fixed;
+  bottom:          0;
+  left:            50%;
+  transform:       translateX(-50%);
+  width:           100%;
+  max-width:       480px;
+  background:      rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top:      1px solid var(--gray-200);
+  display:         flex;
+  align-items:     center;
+  justify-content: space-around;
+  padding:         0 var(--space-sm);
+  z-index:         200;
+}
+
+.nav_btn {
+  background:      none;
+  border:          none;
+  cursor:          pointer;
+  width:           48px;
+  height:          48px;
+  border-radius:   var(--radius-sm);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           var(--text-secondary);
+  font-size:       22px;
+  position:        relative;
+  transition:      transform     var(--transition),
+                   background    var(--transition),
+                   color         var(--transition);
+}
+
+.nav_btn:hover {
+  background: var(--gray-200);
+  color:      var(--text-primary);
+  transform:  translateY(-2px);
+}
+
+.nav_btn:active {
+  transform: scale(0.88) translateY(0);
+}
+
+/* Active state */
+.nav_btn.active {
+  color: var(--black);
+}
+
+/* Active indicator dot */
+.nav_btn.active::after {
+  content:           '';
+  position:          absolute;
+  bottom:            5px;
+  left:              50%;
+  transform:         translateX(-50%);
+  width:             4px;
+  height:            4px;
+  background:        var(--black);
+  border-radius:     50%;
+  animation:         dotFade 0.25s var(--ease-smooth) both;
+}
+
+@keyframes dotFade {
+  from { opacity: 0; transform: translateX(-50%) scale(0); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* Profile avatar in nav */
+.nav_avatar {
+  width:         28px;
+  height:        28px;
+  border-radius: 50%;
+  overflow:      hidden;
+  border:        2px solid transparent;
+  transition:    border-color var(--transition);
+}
+
+.nav_btn.active .nav_avatar {
+  border-color: var(--black);
+}
+
+.nav_avatar img {
+  width:         100%;
+  height:        100%;
+  object-fit:    cover;
+  border-radius: 50%;
+}
+
+
+/* ── 14. Utility: Ripple on Tap ───────────────────────────── */
+
+@keyframes rippleFade {
+  0%   { transform: scale(0);   opacity: 0.25; }
+  100% { transform: scale(2.8); opacity: 0;    }
+}
+
+.icon_btn:active::after,
+.nav_btn:active::before {
+  content:       '';
+  position:      absolute;
+  inset:         0;
+  border-radius: inherit;
+  background:    currentColor;
+  opacity:       0;
+  transform:     scale(0);
+  pointer-events: none;
+  animation:     rippleFade 0.4s var(--ease-smooth) forwards;
+}
+
+
+/* ── 15. Skeleton Shimmer (loading state) ─────────────────── */
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton {
+  background:      linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+  background-size: 800px 100%;
+  border-radius:   var(--radius-sm);
+  animation:       shimmer 1.4s infinite linear;
+}
+
+
+/* ── 16. Responsive Breakpoints ───────────────────────────── */
+
+/* Mobile: edge-to-edge, no shadow */
+@media (max-width: 480px) {
+  .wrap {
+    box-shadow: none;
+  }
+
+  .dm_avatar {
+    width:  52px;
+    height: 52px;
+  }
+
+  .dm_username {
+    font-size: 20px;
+  }
+}
+
+/* Tablet / Desktop: floating card */
+@media (min-width: 481px) {
+  body {
+    padding:     24px 0;
+    align-items: flex-start;
+  }
+
+  .wrap {
+    min-height:    calc(100vh - 48px);
+    border-radius: var(--radius-lg);
+    overflow:      hidden;
+  }
+
+  .nav_bar {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+}
+
+/* Large screens: a bit more breathing room */
+@media (min-width: 768px) {
+  body {
+    padding: 32px 0;
+  }
+
+  .dm_avatar {
+    width:  60px;
+    height: 60px;
+  }
+}
+
+
+/* ── 17. Accessibility: Reduced Motion ────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
+  }
+}
+
+
+/* ── 18. Focus Styles (keyboard navigation) ───────────────── */
+
+:focus-visible {
+  outline:        2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius:  var(--radius-sm);
+}
+
+.dm_item:focus-visible,
+.requests_banner:focus-visible {
+  outline-offset: -2px;
+}
+
+
+/* ── 19. Dark Mode (system preference) ───────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white:          #000000;
+    --black:          #ffffff;
+    --gray-50:        #0a0a0a;
+    --gray-100:       #111111;
+    --gray-200:       #1e1e1e;
+    --gray-300:       #2e2e2e;
+    --gray-400:       #3d3d3d;
+    --gray-500:       #6e6e6e;
+    --text-primary:   #f5f5f5;
+    --text-secondary: #a8a8a8;
+    --text-muted:     #6e6e6e;
+  }
+
+  .dm_header {
+    background: rgba(0, 0, 0, 0.92);
+  }
+
+  .nav_bar {
+    background: rgba(0, 0, 0, 0.92);
+  }
+
+  .search_bar {
+    background: var(--gray-200);
+    color:      var(--text-primary);
+  }
+
+  .search_bar:focus {
+    background: var(--gray-300);
+    box-shadow: 0 0 0 2px var(--gray-400);
+  }
+
+  .requests_banner {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+  }
+
+  .requests_banner:hover {
+    background: var(--gray-200);
+  }
+
+  .req_avatar,
+  .online_dot {
+    border-color: var(--gray-100);
+  }
+}
+
+/* ============================================================
+   Instagram DM Thread — andrew_style.css
+   Modern · Responsive · Animated
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
+
+
+/* ── 1. Design Tokens ────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+
+  /* Palette */
+  --black:          #000000;
+  --white:          #ffffff;
+  --gray-100:       #fafafa;
+  --gray-200:       #efefef;
+  --gray-300:       #dbdbdb;
+  --gray-400:       #c7c7c7;
+  --text-primary:   #1a1a1a;
+  --text-secondary: #737373;
+  --text-muted:     #a8a8a8;
+
+  /* Bubble colors */
+  --bubble-sent:      #3797f0;
+  --bubble-sent-text: #ffffff;
+  --bubble-recv:      #efefef;
+  --bubble-recv-text: #1a1a1a;
+
+  /* Accent */
+  --blue:         #0095f6;
+  --green-online: #22c55e;
+
+  /* Layout */
+  --header-h:  60px;
+  --footer-h:  64px;
+  --max-w:     480px;
+
+  /* Radii */
+  --radius-bubble: 20px;
+  --radius-pill:   999px;
+  --radius-sm:     8px;
+  --radius-md:     14px;
+  --radius-lg:     20px;
+
+  /* Motion */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t:           0.2s var(--ease-smooth);
+}
+
+
+/* ── 2. Reset & Base ─────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin:     0;
+  padding:    0;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background:  var(--gray-100);
+  color:       var(--text-primary);
+  -webkit-font-smoothing:  antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height:      100%;
+  display:     flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+button {
+  font-family: inherit;
+  cursor:      pointer;
+}
+
+::-webkit-scrollbar { width: 0; height: 0; }
+* { scrollbar-width: none; }
+
+
+/* ── 3. App Shell ────────────────────────────────────────── */
+
+.wrap {
+  width:       100%;
+  max-width:   var(--max-w);
+  height:      100vh;
+  background:  var(--white);
+  display:     grid;
+  grid-template-rows: var(--header-h) 1fr var(--footer-h);
+  box-shadow:  0 0 60px rgba(0, 0, 0, 0.10);
+  overflow:    hidden;
+  position:    relative;
+
+  /* Page entrance */
+  animation: wrapIn 0.4s var(--ease-smooth) both;
+}
+
+@keyframes wrapIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+
+/* ── 4. Header ───────────────────────────────────────────── */
+
+.message_header {
+  height:          var(--header-h);
+  display:         flex;
+  align-items:     center;
+  gap:             10px;
+  padding:         0 12px;
+  background:      rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom:   1px solid var(--gray-200);
+  position:        relative;
+  z-index:         100;
+  transition:      box-shadow var(--t);
+
+  animation: headerIn 0.38s var(--ease-smooth) both;
+}
+
+@keyframes headerIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+.message_header.scrolled {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Back button */
+.back_btn {
+  background:    none;
+  border:        none;
+  width:         36px;
+  height:        36px;
+  border-radius: 50%;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  color:         var(--text-primary);
+  font-size:     17px;
+  flex-shrink:   0;
+  transition:    background var(--t), transform var(--t);
+}
+
+.back_btn:hover  { background: var(--gray-200); }
+.back_btn:active { transform: scale(0.88); }
+
+/* ── User info in header */
+.user_header {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  flex:        1;
+  min-width:   0;
+  cursor:      pointer;
+}
+
+.user_header_info {
+  display:        flex;
+  flex-direction: column;
+  min-width:      0;
+}
+
+.user_display_name {
+  font-size:      15px;
+  font-weight:    700;
+  white-space:    nowrap;
+  overflow:       hidden;
+  text-overflow:  ellipsis;
+  letter-spacing: -0.1px;
+}
+
+.user_status {
+  font-size: 12px;
+  color:     var(--green-online);
+  font-weight: 500;
+}
+
+/* ── Avatar ring in header */
+.avatar_ring {
+  position:    relative;
+  flex-shrink: 0;
+}
+
+.avatar_placeholder {
+  width:           40px;
+  height:          40px;
+  border-radius:   50%;
+  background:      var(--ig-gradient);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           var(--white);
+  font-size:       16px;
+  font-weight:     700;
+  letter-spacing:  0;
+  transition:      transform var(--t);
+}
+
+.user_header:hover .avatar_placeholder {
+  transform: scale(1.05);
+}
+
+.online_dot {
+  position:      absolute;
+  bottom:        1px;
+  right:         1px;
+  width:         11px;
+  height:        11px;
+  background:    var(--green-online);
+  border-radius: 50%;
+  border:        2px solid var(--white);
+  animation:     onlinePulse 2.8s ease infinite;
+}
+
+@keyframes onlinePulse {
+  0%,  100% { box-shadow: 0 0 0 0   rgba(34, 197, 94, 0.5); }
+  50%        { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);   }
+}
+
+/* ── Header action icons */
+.header_actions {
+  display:     flex;
+  align-items: center;
+  gap:         2px;
+  flex-shrink: 0;
+}
+
+.icon_btn {
+  background:      none;
+  border:          none;
+  width:           38px;
+  height:          38px;
+  border-radius:   50%;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           var(--text-primary);
+  font-size:       20px;
+  transition:      background var(--t), transform var(--t), color var(--t);
+}
+
+.icon_btn:hover  { background: var(--gray-200); transform: scale(1.08); }
+.icon_btn:active { transform: scale(0.88); }
+
+
+/* ── 5. Message Thread ───────────────────────────────────── */
+
+.message_main {
+  overflow-y:    auto;
+  padding:       16px 12px 8px;
+  display:       flex;
+  flex-direction: column;
+  gap:           2px;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+
+/* ── 6. Date Separator ───────────────────────────────────── */
+
+.date_separator {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  margin:          8px 0 12px;
+}
+
+.date_separator span {
+  font-size:      11.5px;
+  font-weight:    500;
+  color:          var(--text-muted);
+  letter-spacing: 0.3px;
+  background:     var(--white);
+  padding:        0 10px;
+  position:       relative;
+}
+
+.date_separator::before {
+  content:    '';
+  position:   absolute;
+  left:       12px;
+  right:      12px;
+  height:     1px;
+  background: var(--gray-300);
+  opacity:    0.6;
+}
+
+
+/* ── 7. Message Row ──────────────────────────────────────── */
+
+.msg_row {
+  display:     flex;
+  align-items: flex-end;
+  gap:         6px;
+  max-width:   100%;
+  margin:      1px 0;
+
+  /* Staggered reveal */
+  animation: msgIn 0.3s var(--ease-smooth) both;
+}
+
+/* Offset stagger for existing messages */
+.msg_row:nth-child(2)  { animation-delay: 0.04s; }
+.msg_row:nth-child(3)  { animation-delay: 0.08s; }
+.msg_row:nth-child(4)  { animation-delay: 0.12s; }
+.msg_row:nth-child(5)  { animation-delay: 0.16s; }
+.msg_row:nth-child(6)  { animation-delay: 0.20s; }
+.msg_row:nth-child(7)  { animation-delay: 0.24s; }
+.msg_row:nth-child(8)  { animation-delay: 0.28s; }
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* New messages sent in session pop in from below */
+.msg_row_new {
+  animation: msgNew 0.28s var(--ease-spring) both !important;
+}
+
+@keyframes msgNew {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* ── Received rows align left */
+.msg_row_received {
+  justify-content: flex-start;
+}
+
+/* ── Sent rows align right */
+.msg_row_sent {
+  justify-content: flex-end;
+}
+
+
+/* ── 8. Small Avatar (received side) ─────────────────────── */
+
+.msg_avatar_small {
+  flex-shrink: 0;
+  align-self:  flex-end;
+  margin-bottom: 2px;
+}
+
+.avatar_placeholder_sm {
+  width:           30px;
+  height:          30px;
+  border-radius:   50%;
+  background:      var(--ig-gradient);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           var(--white);
+  font-size:       12px;
+  font-weight:     700;
+}
+
+
+/* ── 9. Bubble Wrapper ───────────────────────────────────── */
+
+.msg_bubble_wrap {
+  display:        flex;
+  flex-direction: column;
+  max-width:      72%;
+  gap:            3px;
+}
+
+.msg_row_sent .msg_bubble_wrap {
+  align-items: flex-end;
+}
+
+.msg_row_received .msg_bubble_wrap {
+  align-items: flex-start;
+}
+
+
+/* ── 10. Message Bubbles ─────────────────────────────────── */
+
+.msg_bubble {
+  padding:       10px 14px;
+  border-radius: var(--radius-bubble);
+  font-size:     14.5px;
+  line-height:   1.45;
+  word-break:    break-word;
+  position:      relative;
+  transition:    transform var(--t), filter var(--t);
+  cursor:        default;
+}
+
+.msg_bubble:hover {
+  filter: brightness(0.96);
+}
+
+/* ── Received bubble */
+.msg_bubble_received {
+  background:    var(--bubble-recv);
+  color:         var(--bubble-recv-text);
+  border-bottom-left-radius: 4px;
+}
+
+/* ── Sent bubble */
+.msg_bubble_sent {
+  background:    var(--bubble-sent);
+  color:         var(--bubble-sent-text);
+  border-bottom-right-radius: 4px;
+}
+
+/* Consecutive bubbles — tighten radius */
+.msg_row_received + .msg_row_received .msg_bubble_received {
+  border-top-left-radius: 4px;
+}
+
+.msg_row_sent + .msg_row_sent .msg_bubble_sent {
+  border-top-right-radius: 4px;
+}
+
+
+/* ── 11. Timestamp ───────────────────────────────────────── */
+
+.msg_time {
+  font-size:   11px;
+  color:       var(--text-muted);
+  padding:     0 4px;
+  letter-spacing: 0.2px;
+  user-select: none;
+}
+
+.msg_time_sent {
+  text-align: right;
+}
+
+
+/* ── 12. Typing Indicator ────────────────────────────────── */
+
+.typing_bubble {
+  display:     flex;
+  align-items: center;
+  gap:         4px;
+  padding:     12px 16px;
+  min-width:   56px;
+}
+
+.typing_dot {
+  width:         7px;
+  height:        7px;
+  background:    var(--gray-400);
+  border-radius: 50%;
+  animation:     typingBounce 1.2s ease infinite;
+}
+
+.typing_dot:nth-child(1) { animation-delay: 0s;    }
+.typing_dot:nth-child(2) { animation-delay: 0.18s; }
+.typing_dot:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes typingBounce {
+  0%,  60%, 100% { transform: translateY(0);    opacity: 0.5; }
+  30%             { transform: translateY(-5px); opacity: 1;   }
+}
+
+
+/* ── 13. Input Bar ───────────────────────────────────────── */
+
+.input_bar {
+  height:          var(--footer-h);
+  display:         flex;
+  align-items:     center;
+  gap:             8px;
+  padding:         0 10px;
+  background:      rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top:      1px solid var(--gray-200);
+  position:        relative;
+  z-index:         100;
+  transition:      box-shadow var(--t);
+}
+
+/* ── Input wrap (input + emoji button) */
+.input_wrap {
+  flex:          1;
+  display:       flex;
+  align-items:   center;
+  background:    var(--gray-200);
+  border-radius: var(--radius-pill);
+  padding:       0 4px 0 14px;
+  transition:    background var(--t), box-shadow var(--t);
+  gap:           4px;
+}
+
+.input_wrap:focus-within {
+  background:  var(--gray-100);
+  box-shadow:  0 0 0 2px var(--gray-300);
+}
+
+.msg_input {
+  flex:        1;
+  border:      none;
+  outline:     none;
+  background:  transparent;
+  font-size:   14.5px;
+  font-family: 'DM Sans', sans-serif;
+  color:       var(--text-primary);
+  padding:     10px 0;
+  caret-color: var(--blue);
+}
+
+.msg_input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* ── Emoji button inside input */
+.emoji_btn {
+  background:  none;
+  border:      none;
+  font-size:   20px;
+  color:       var(--text-secondary);
+  width:       34px;
+  height:      34px;
+  border-radius: 50%;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:  color var(--t), background var(--t), transform var(--t);
+}
+
+.emoji_btn:hover  { color: var(--text-primary); background: var(--gray-200); }
+.emoji_btn:active { transform: scale(0.88); }
+
+/* ── Small icon button (+ button) */
+.icon_btn_sm {
+  font-size: 24px;
+  width:     40px;
+  height:    40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+
+/* ── 14. Send Button ─────────────────────────────────────── */
+
+.send_btn {
+  background:      var(--gray-200);
+  border:          none;
+  width:           38px;
+  height:          38px;
+  border-radius:   50%;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       16px;
+  color:           var(--text-secondary);
+  flex-shrink:     0;
+  transition:      background var(--t), color var(--t), transform var(--t);
+}
+
+.send_btn:hover  { background: var(--gray-300); }
+.send_btn:active { transform: scale(0.88); }
+
+/* Active state when text is typed */
+.send_btn_active {
+  background: var(--blue);
+  color:      var(--white);
+}
+
+.send_btn_active:hover {
+  background: #0082d8;
+}
+
+/* Icon swap animation */
+.send_btn i {
+  transition: transform 0.15s var(--ease-spring), opacity 0.15s ease;
+}
+
+.send_btn_active i {
+  animation: sendIconIn 0.2s var(--ease-spring) both;
+}
+
+@keyframes sendIconIn {
+  from { transform: scale(0.5) rotate(-20deg); opacity: 0; }
+  to   { transform: scale(1)   rotate(0deg);   opacity: 1; }
+}
+
+
+/* ── 15. Responsive ──────────────────────────────────────── */
+
+/* Mobile: fill full screen */
+@media (max-width: 480px) {
+  .wrap {
+    box-shadow: none;
+    max-width:  100%;
+  }
+
+  .msg_bubble_wrap {
+    max-width: 80%;
+  }
+}
+
+/* Tablet / Desktop: floating card */
+@media (min-width: 481px) {
+  body {
+    padding:       24px 0;
+    align-items:   flex-start;
+  }
+
+  .wrap {
+    height:        calc(100vh - 48px);
+    border-radius: 22px;
+    overflow:      hidden;
+  }
+}
+
+/* Large: slight breathing room */
+@media (min-width: 768px) {
+  body { padding: 32px 0; }
+  .wrap { height: calc(100vh - 64px); }
+}
+
+
+/* ── 16. Accessibility ───────────────────────────────────── */
+
+:focus-visible {
+  outline:        2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius:  var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
+  }
+}
+
+
+/* ── 17. Dark Mode ───────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white:            #000000;
+    --black:            #ffffff;
+    --gray-100:         #111111;
+    --gray-200:         #1e1e1e;
+    --gray-300:         #2e2e2e;
+    --gray-400:         #3d3d3d;
+    --text-primary:     #f5f5f5;
+    --text-secondary:   #a8a8a8;
+    --text-muted:       #6e6e6e;
+    --bubble-recv:      #1e1e1e;
+    --bubble-recv-text: #f5f5f5;
+  }
+
+  .message_header,
+  .input_bar {
+    background: rgba(0, 0, 0, 0.92);
+  }
+
+  .online_dot,
+  .msg_avatar_small .avatar_placeholder_sm {
+    border-color: #000;
+  }
+
+  .input_wrap {
+    background: var(--gray-200);
+  }
+
+  .input_wrap:focus-within {
+    background: var(--gray-300);
+    box-shadow: 0 0 0 2px var(--gray-400);
+  }
+
+  .send_btn {
+    background: var(--gray-300);
+    color:      var(--text-secondary);
+  }
+
+  .send_btn:hover { background: var(--gray-400); }
+}
+
